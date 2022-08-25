@@ -1,0 +1,55 @@
+{% extends 'layout/base.html' %}
+
+{% block title %} Trang chủ {% endblock %}
+
+{% block content %}
+<h1 class="sub">Danh sách khám</h1>
+
+{% if err_msg %}
+<div class="alert alert-danger">
+  <h5>{{ err_msg }}</h5>
+</div>
+{% endif %}
+
+<form action="{{ url_for('danh_sach_kham') }}" name="date">
+    <div class="form-group" style="text-align: center">
+        <label for="booking_date">Chọn ngày</label>
+        <input style="width: 25%; display:inline" type="date" class="form-control" id="booking_date"
+               name="booking_date" required>
+        <input value="Thống kê" type="submit" class="btn btn-danger">
+    </div>
+    <table style="margin: 3em 0; text-align: center" class="table table-bordered">
+        <thead>
+            <tr>
+                <th colspan="5">DANH SÁCH KHÁM BỆNH</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="5"><b>Ngày khám: </b>{{ booking_date }}</td>
+            </tr>
+            <tr>
+                <th>STT</th>
+                <th>Họ tên</th>
+                <th>Giới tính</th>
+                <th>Năm sinh</th>
+                <th>Địa chỉ</th>
+            </tr>
+            {% for m in list_form %}
+            <tr class="phieukham">
+                <td></td>
+                <td>{{ m.name_patient }}</td>
+                <td>{{ m.gender }}</td>
+                <td>{{ m.birth_date.year }}</td>
+                <td>{{ m.address }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="form-group" style="text-align: right">
+        <a href="{{ url_for('done_list_and_send_sms', booking_date=booking_date) }}" class="btn btn-success">
+            Hoàn tất danh sách
+        </a>
+    </div>
+</form>
+{% endblock %}

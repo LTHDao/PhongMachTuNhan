@@ -1,0 +1,94 @@
+{% extends 'admin/base.html' %}
+
+{% block body %}
+<h2 class="text-danger" style="margin: 0.5em">Thống kê doanh thu tháng {{ month }}/{{ year }}</h2>
+<div class="row">
+
+    <div class="col-md-6 col-xs-12" style="margin-right: 3em">
+        <table class="table">
+            <tr style="text-align: center">
+                <th>Ngày</th>
+                <th>Doanh thu</th>
+                <th>Số lượng bệnh nhân</th>
+                <th>Tỉ lệ</th>
+            </tr>
+            {% for x in total_money %}
+                {% for s in money %}
+                    {% for c in count_patient %}
+                    <tr style="text-align: center">
+                        {% if s[0]==c[0] %}
+                        <td>{{ s[0] }}</td>
+                        <td>{{ "{:,.1f}".format(s[1]) }} VND</td>
+                        <td>{{ c[1] }}</td>
+                        <td>{{ "{:,.1f}".format(s[1]/x[1]*100) }}%</td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                {% endfor %}
+            <tr style="text-align: center; border-style: dotted">
+                <th>Tổng tiền</th>
+                <td>{{ "{:,.1f}".format(x[1]) }} VND</td>
+                <td></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div class="col-md-5 col-xs-12">
+        <form>
+            <div class="form-group">
+                <input type="number" min="1" max="12" name="month" class="form-control", placeholder="Nhập tháng... ">
+                <input type="number" min="2020" name="year" class="form-control", placeholder="Nhập năm... ">
+            </div>
+            <input type="submit" value="Thống kê" class="btn btn-danger">
+        </form>
+        <canvas id="myChart"></canvas>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    let labels = []
+    let info = []
+    let colors = []
+    let borderColors = []
+    let r, g, b;
+
+        {% for x in money %}
+            labels.push({{ x[0] }})
+            info.push({{ x[1] }})
+
+            r = Math.random()*255
+            g = Math.random()*255
+            b = Math.random()*255
+
+            colors.push(`rgba(${r}, ${g}, ${b}, 0.2)`)
+            borderColors.push(`rgba(${r}, ${g}, ${b}, 0.8)`)
+        {% endfor %}
+
+    window.onload = function() {
+        const ctx = document.getElementById('myChart').getContext('2d')
+        const myChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Thống kê doanh thu theo tháng',
+            data: info,
+            backgroundColor: colors,
+            borderColor:borderColors,
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+    }
+</script>
+
+{% endblock %}

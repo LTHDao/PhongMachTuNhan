@@ -1,0 +1,60 @@
+<nav class="navbar navbar-expand-sm navbar-expand-xl navbar-expand-lg navbar-expand-md bg-dark navbar-dark">
+  <!-- Brand/logo -->
+    <a class="navbar-brand" href="{{ url_for('home') }}">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="logo" style="width:40px;">
+    </a>
+        <!-- Links -->
+    <ul class="navbar-nav col-md-9" style="align-items:center">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('home') }}">Trang chủ</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Giới thiệu</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Tư vấn</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Chuyên khoa</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Truyền thông</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Dịch vụ</a>
+        </li>
+    </ul>
+
+    <ul class="navbar-nav col-md-2 col-sm-3" style="align-items:center; width: 5em">
+        {% if current_user.is_authenticated %}
+        <li class="nav-item dropdown col-md-2" style="padding-left:5em">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="{{ url_for('home') }}">
+                {% if current_user.avatar %}
+                <img class="rounded-circle" src="{{ current_user.avatar }}" width="30" alt="{{ current_user.name }}" />
+                {% else %}
+                <img class="rounded-circle" src="{{ url_for('static', filename='images/avatar.png') }}"
+                   width="30" alt="{{ current_user.name }}"/>
+                {% endif %}
+                {{ current_user.name }}
+            </a>
+            <div class="dropdown-menu" style="margin-left:7em">
+                <a class="dropdown-item" href="{{ url_for('user', username=current_user.username) }}">Tài khoản</a>
+                <a class="dropdown-item" href="{{ url_for('registration_form', user_id=current_user.id) }}">
+                    Lịch khám của tôi
+                </a>
+                <a class="dropdown-item" href="{{ url_for('user_signout') }}">Đăng xuất</a>
+            </div>
+        </li>
+        {% else %}
+            <li class="nav-item" style="padding-left:3em">
+                <a class="nav-link text-danger" href="{{ url_for('user_signin') }}">Đăng Nhập</a>
+            </li>
+            <li>
+                <div style="border-right:2px solid #ffffff36; height:1.5em"></div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-danger" href="{{ url_for('user_register') }}">Đăng Ký</a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>

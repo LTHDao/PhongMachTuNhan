@@ -1,0 +1,19 @@
+{% extends "layout/base.html" %}
+ 
+{% block content %}
+<h1 class="sub">THÔNG TIN TÀI KHOẢN</h1>
+<div class="card">
+    <form>
+        <div class="card-body">Họ tên: {{ user.name }} </div>
+        <div class="card-body">Username: {{ user.username }} </div>
+        <div class="card-body">Ngày đăng ký: {{ user.joined_date }} </div>
+        <div class="card-body">
+            SĐT: {% if user.phone_number  == None %}
+                Không có số điện thoại
+            {% else %}
+                {{ user.phone_number }}
+            {% endif %}
+        </div>
+    </form>
+</div>
+{% endblock %}

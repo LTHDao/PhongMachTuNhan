@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> {% block title %} {% endblock %} </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename='js/list_medicines.js') }}"></script>
+
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" />
+    {% block css %} {% endblock %}
+    {% block js %}  {% endblock %}
+</head>
+<body>
+    {% block header %}
+        {% include 'layout/header.html' %}
+    {% endblock %}
+
+    <div class="container-sm container-md container-lg container-xl">
+    {% block content %} MY CONTENT {% endblock %}
+    </div>
+
+    {% block footer %}
+        {% include 'layout/footer.html' %}
+    {% endblock %}
+</body>
+</html>

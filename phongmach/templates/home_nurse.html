@@ -1,0 +1,10 @@
+{% extends 'layout/base.html' %}
+
+{% block title %} Trang chủ y tá {% endblock %}
+
+{% block content %}
+<h1 class="sub">TRANG CHỦ Y TÁ</h1>
+<a href="{{ url_for('book_appoint') }}" class="nurse_btn btn btn-success" role="button">Đăng kí lịch khám</a>
+<a href="{{ url_for('danh_sach_kham') }}" class="nurse_btn btn btn-info" role="button">Hoàn tất danh sách khám</a>
+<a href="{{ url_for('luu_don_thuoc') }}" class="nurse_btn btn btn-warning" role="button">Nhập phiếu khám và thanh toán</a>
+{% endblock %}

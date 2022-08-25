@@ -1,0 +1,83 @@
+{% extends 'admin/base.html' %}
+
+{% block body %}
+<h2 class="text-danger" style="margin: 0.5em">Thống kê tần suất sử dụng thuốc trong tháng {{ month }}/{{ year }}</h2>
+<div class="row">
+
+    <div class="col-md-6 col-xs-12" style="margin-right: 3em">
+        <table class="table">
+            <tr style="text-align: center">
+                <th>Thuốc</th>
+                <th>Đơn vị thuốc</th>
+                <th>Số lượng</th>
+                <th>Số lần dùng</th>
+            </tr>
+            {% for s in chart_medicine %}
+                <tr style="text-align: center">
+                    <td>{{ s[0].name }}</td>
+                    <td>{{ s[1] }}</td>
+                    <td>{{ s[2] }}</td>
+                    <td>{{ s[3] }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div class="col-md-5 col-xs-12">
+        <form>
+            <div class="form-group">
+                <input type="number" min="1" max="12" name="month" class="form-control", placeholder="Nhập tháng... ">
+                <input type="number" min="2020" name="year" class="form-control", placeholder="Nhập năm... ">
+            </div>
+            <input type="submit" value="Thống kê" class="btn btn-danger">
+        </form>
+        <canvas id="myChart"></canvas>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    let labels = []
+    let info = []
+    let colors = []
+    let borderColors = []
+    let r, g, b;
+
+    {% for s in chart_medicine %}
+        labels.push('{{ s[0] }}')
+        info.push({{ s[2] }})
+
+        r = Math.random()*255
+        g = Math.random()*255
+        b = Math.random()*255
+
+        colors.push(`rgba(${r}, ${g}, ${b}, 0.2)`)
+        borderColors.push(`rgba(${r}, ${g}, ${b}, 0.8)`)
+    {% endfor %}
+
+    window.onload = function() {
+        const ctx = document.getElementById('myChart').getContext('2d')
+        const myChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Thống kê doanh thu theo tháng',
+            data: info,
+            backgroundColor: colors,
+            borderColor:borderColors,
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+    }
+</script>
+
+{% endblock %}

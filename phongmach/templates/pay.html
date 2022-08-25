@@ -1,0 +1,34 @@
+{% extends 'layout/base.html' %}
+
+{% block title %} Nhập phiếu khám {% endblock %}
+
+{% block content %}
+<table class="table table-bordered">
+    <thead>
+        <tr style="text-align: center; font-size: 1.3em">
+            <th colspan="2">HÓA ĐƠN THANH TOÁN</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if patient %}
+        <tr>
+            <td>Họ tên: {{ patient.name }}</td>
+            <td>Ngày khám: {{ patient.date }}</td>
+        </tr>
+        {% endif %}
+        {% if money %}
+        <tr>
+            <td>Tiền khám: {{ "{:,.1f}".format( money.policy_money) }} VND</td>
+            <td>Tiền thuốc: {{ "{:,.1f}".format(money.total_amount) }} VND</td>
+        </tr>
+        <tr>
+            <td colspan="2">Tổng tiền: {{ "{:,.1f}".format(money.policy_money + money.total_amount) }} VND</td>
+        </tr>
+        {% endif %}
+    </tbody>
+</table>
+<div class="form-group">
+    <a class="btn btn-success" href="{{ url_for('luu_don_thuoc') }}">Nhập phiếu khám khác</a>
+    <a class="btn btn-success" href="{{ url_for('home_nurse') }}">Về trang chủ</a>
+</div>
+{% endblock %}

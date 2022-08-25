@@ -1,0 +1,26 @@
+{% extends "layout/base.html" %}
+
+{% block content %}
+<h1 class="sub">Lịch khám đã đăng ký</h1>
+{% if regform %}
+{% for m in regform %}
+    <div class="card" id="registration_form{{m.id}}">
+        <div class="card-header"><b>Mã số phiếu:</b> {{ m.id }}</div>
+        <div class="card-body">Họ tên: <i>{{ m.name_patient }}</i></div>
+        <div class="card-body">Ngày đăng ký khám: <i>{{ m.booking_date.date() }}</i></div>
+        <div class="card-body">Ngày sinh: <i>{{ m.birth_date.date() }}</i></div>
+        <div class="card-body">Giới tính: <i>{{ m.gender }}</i></div>
+        <div class="card-body">Số điện thoại đăng ký: <i>+{{ m.phone_number }}</i></div>
+        <div class="card-body">Địa chỉ: <i>{{ m.address }}</i> </div>
+        <div class="card-body">
+            <a href="{{ url_for('delete_regform', regform_id=m.id) }}" class="btn btn-danger" type="button">
+                Hủy phiếu đăng ký
+            </a>
+        </div>
+    </div>
+<br>
+{% endfor %}
+{% else %}
+<div class="alert alert-warning"><i>Không có phiếu đăng ký khám nào!!!</i></div>
+{% endif %}
+{% endblock %}>

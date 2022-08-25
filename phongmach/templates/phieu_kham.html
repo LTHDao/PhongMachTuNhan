@@ -1,0 +1,131 @@
+{% extends 'layout/base.html' %}
+
+{% block title %} Nhập phiếu khám {% endblock %}
+
+{% block content %}
+<h1 class="sub">Nhập phiếu khám</h1>
+<form method="post" action="{{ url_for('luu_don_thuoc') }}" name="thongtinbenhnhan">
+    <div class="form-group">
+        <label for="regis_id">Mã khách hàng</label>
+        <input type="number" class="form-control" placeholder="Nhập mã số khách hàng..." id="regis_id" name="regis_id" required>
+    </div>
+    <div class="form-group">
+        <label for="symptom">Triệu chứng</label>
+        <input type="text" class="form-control" placeholder="Nhập triệu chứng" id="symptom" name="symptom" required>
+    </div>
+    <div class="form-group">
+        <label for="predict">Dự đoán bệnh</label>
+        <input type="text" class="form-control" placeholder="Nhập dự đoán bệnh..." id="predict" name="predict" required>
+    </div>
+    <div>
+        <a class="btn btn-info" href="#" type="submit" onclick="addPhieu()">Lưu thông tin</a>
+    </div>
+</form>
+
+<h2 class="sub text-info text-center">Đơn thuốc</h2>
+
+<form method="post" action="{{ url_for('luu_don_thuoc') }}">
+  <div>
+    <div class="form-group">
+      <label style="display:block">Thuốc: </label>
+          {% for m in medicines %}
+          <a class="btn btn-secondary" href="#"
+             onclick="addMedicines({{ m.id }}, '{{ m.name }}', {{ m.price }}, '{{ m.unit }}', '{{ m.dosage }}' )"
+             style="width:8.5em; height:4em">
+              {{ m.name }} - {{ m.unit.name }}
+          </a>
+          {% endfor %}
+    </div>
+  </div>
+</form>
+<button class="btn btn-success" type="button" onClick="window.location.reload()">Xác nhận phiếu khám</button>
+<div>
+    <div class="toast noti" data-autohide="false">
+      <div class="toast-header">
+        <strong class="mr-auto text-primary">Xin Chào</strong>
+        <small class="text-muted"></small>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
+      </div>
+      <div class="toast-body">
+        Bấm vào đây để xem phiếu khám!!!
+      </div>
+    </div>
+</div>
+<div>
+    <a href="#" data-toggle="modal" data-target="#myModal">
+        <img class="phieu" src="{{ url_for('static', filename='images/phieu.png') }}">
+    </a>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Modal Heading</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body showDon">
+        <table class="phieukham col-md-12 col-sm-12 table table-bordered">
+            <tr style="text-align: center">
+                <th style="font-size: 1.5em" colspan="6">PHIẾU KHÁM BỆNH</th>
+            </tr>
+            <tr>
+                <td colspan="3"><b>Họ và tên: </b> <span id="namePatient">{{ regis.name }}</span> </td>
+                <td colspan="3"><b>Ngày khám: </b>{{ regis.date }}</td>
+            </tr>
+            {% if 'phieukham' in session and session['phieukham'] %}
+            <tr>
+                <td colspan="3"><b>Triệu chứng:</b> {{ session['phieukham']['symptom'] }}</td>
+                <td colspan="3"><b>Dự đoán loại bệnh:</b> {{ session['phieukham']['predict'] }}</td>
+            </tr>
+
+            {% endif %}
+            <tr style="text-align: center">
+                <th>STT</th>
+                <th>Thuốc</th>
+                <th>Đơn vị thuốc</th>
+                <th>Số lượng</th>
+                <th>Cách dùng</th>
+                <td></td>
+            </tr>
+            {% if 'list_medicines' in session and session['list_medicines'] %}
+            {% for c in session['list_medicines'].values() %}
+            <tr class="phieukham" id="medicine{{ c.id }}" style="text-align: center">
+                <td></td>
+                <td>{{ c.name }}</td>
+                <td>{{ c.unit }}</td>
+                <td>
+                    <div class="form-group">
+                        <input class="form-control number"
+                               type="number" min="1"
+                               onblur="updateMedicines({{ c.id }}, this)"
+                               value="{{ c.quantity }}">
+                    </div>
+                </td>
+                <td width="20%">
+                    {{ c.dosage }}
+                </td>
+                <td width="10%">
+                    <input class="btn btn-danger"
+                           onclick="deleteMedicines({{ c.id }})"
+                           type="button"
+                           value="Xóa">
+                </td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+        </table>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <input type="button" value="Lưu phiếu khám" class="btn btn-primary" onclick="save()">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

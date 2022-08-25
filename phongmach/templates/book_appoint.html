@@ -1,0 +1,48 @@
+{% extends 'layout/base.html' %}
+
+{% block title %} Đăng ký lịch khám {% endblock %}
+
+{% block content %}
+<h1 class="sub">ĐĂNG KÝ LỊCH KHÁM BỆNH</h1>
+
+{% if err_msg %}
+<div class="alert alert-danger">
+  <h4>{{ err_msg }}</h4>
+</div>
+{% endif %}
+
+<form method="post" id="regisform" action="{{ url_for('book_appoint')}}">
+  <div class="form-group">
+    <label for="name_patient">Họ và Tên</label>
+    <input type="text" class="form-control" placeholder="Nhập họ và tên..." id="name_patient" name="name_patient">
+  </div>
+  <div class="form-group">
+    <label for="phone_number">Số điện thoại</label>
+    <input type="tel" class="form-control" placeholder="Nhập số điện thoại..." id="phone_number" name="phone_number">
+  </div>
+  <div class="form-group">
+    <label for="address">Địa chỉ</label>
+    <input type="text" class="form-control" placeholder="Nhập địa chỉ..." id="address" name="address">
+  </div>
+  <div>
+    <label>Giới tính: </label>
+    <div class="custom-control custom-radio custom-control-inline">
+      <input type="radio" class="custom-control-input" id="male" name="gender" value="Nam">
+      <label class="custom-control-label" for="male">Nam</label>
+    </div>
+    <div class="custom-control custom-radio custom-control-inline">
+      <input type="radio" class="custom-control-input" id="female" name="gender" value="Nữ">
+      <label class="custom-control-label" for="female">Nữ</label>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="birth_date">Ngày sinh</label>
+    <input type="date" class="form-control" id="birth_date" name="birth_date">
+  </div>
+  <div class="form-group">
+    <label for="booking_date">Ngày khám</label>
+    <input type="date" class="form-control" id="booking_date" name="booking_date">
+  </div>
+  <input type="submit" value="Đặt lịch" class="btn btn-info">
+</form>
+{% endblock %}
